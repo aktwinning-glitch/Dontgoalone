@@ -1,8 +1,10 @@
-import React, { createContext, useContext, useState, useCallback } from "react";
+import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from "react";
 import { createInitialPlayer, applyEffects, clampStat } from "./gameEngine";
 import { createRunState, applyChoiceEffect } from "./narrativeMemoryEngine";
 
-const SESSION_KEY = "rental_session_v2";
+const SESSION_KEY = "dont_go_alone_session_v3";
+const LEGACY_SESSION_KEYS = ["rental_session_v2"];
+const SAVE_VERSION = 3;
 import { generateRunVariant } from "./consequenceEngine";
 import {
   createPartyMember,
@@ -11,7 +13,7 @@ import {
   updateMemberState,
   moveMember,
 } from "./partyEngine";
-import { initSuspicionScores, applyTrustEffects, selectKiller, applyCohesionDelta } from "./trustEngine";
+import { initSuspicionScores, applyTrustEffects, selectKiller } from "./trustEngine";
 
 const GameContext = createContext(null);
 
@@ -21,17 +23,20 @@ export function GameProvider({ children }) {
   const [focusedMemberId, setFocusedMemberId] = useState(null);
   const [gamePhase, setGamePhase] = useState("start");
   const [choiceCount, setChoiceCount] = useState(0);
-  // Shared character image map (id → url) set once when assets load
   const [charImageMap, setCharImageMap] = useState({});
   const [suspicionScores, setSuspicionScores] = useState({});
   const [cohesionScore, setCohesionScore] = useState(60);
   const [killerCharacterId, setKillerCharacterId] = useState(null);
-  // threatType: "spirit" | "survivor" | "member"
   const [threatType, setThreatType] = useState(null);
-  // Narrative memory: persists across all events
   const [runState, setRunState] = useState(null);
+  const [runSeed, setRunSeed] = useState(null);
+  const [activeModifiers, setActiveModifiers] = useState([]);
+  const [temporaryTraits, setTemporaryTraits] = useState([]);
+  const [discoveredClues, setDiscoveredClues] = useState([]);
+  const [objectiveState, setObjectiveState] = useState({});
+  const [elapsedTurns, setElapsedTurns] = useState(0);
+  const snapshotRef = useRef(null);
 
-  // characters: full list from DB. playerCharacter: the selected one.
   const initPlayer = useCallback((playerCharacter, allCharacters = [], storyId = "the_rental") => {
     const runVariant = generateRunVariant(allCharacters);
     const base = createInitialPlayer(playerCharacter, runVariant);
@@ -49,7 +54,12 @@ export function GameProvider({ children }) {
     const threatTypes = ["spirit", "survivor", "member"];
     setThreatType(threatTypes[Math.floor(Math.random() * threatTypes.length)]);
     setFocusedMemberId(null);
-    // Initialize narrative memory for this run
+    setRunSeed(`${Date.now()}-${Math.random().toString(36).slice(2, 10)}`);
+    setActiveModifiers([]);
+    setTemporaryTraits([]);
+    setDiscoveredClues([]);
+    setObjectiveState({});
+    setElapsedTurns(0);
     setRunState(createRunState(playerCharacter.name, playerCharacter.id, storyId));
     setGamePhase("playing");
   }, []);
@@ -117,27 +127,25 @@ export function GameProvider({ children }) {
     });
   }, []);
 
-  // ── Party actions ──────────────────────────────────────────────────────────
   const setPartyConsequence = useCallback((memberId, outcome, statusText) => {
     setParty(prev => applyPartyConsequence(prev, memberId, outcome, statusText));
   }, []);
 
   const applyTrustSuspicion = useCallback((effectPayload) => {
-    setParty(prev => {
-      setSuspicionScores(scores => {
-        setCohesionScore(cohesion => {
-          const result = applyTrustEffects(prev, scores, cohesion, effectPayload);
-          // side effects from closure — update party + suspicion + cohesion
-          setTimeout(() => {
+    setParty(currentParty => {
+      setSuspicionScores(currentScores => {
+        setCohesionScore(currentCohesion => {
+          const result = applyTrustEffects(currentParty, currentScores, currentCohesion, effectPayload);
+          queueMicrotask(() => {
             setParty(result.party);
             setSuspicionScores(result.suspicionScores);
             setCohesionScore(result.cohesionScore);
-          }, 0);
-          return result.cohesionScore;
+          });
+          return currentCohesion;
         });
-        return scores;
+        return currentScores;
       });
-      return prev;
+      return currentParty;
     });
   }, []);
 
@@ -155,17 +163,35 @@ export function GameProvider({ children }) {
 
   const incrementChoiceCount = useCallback(() => {
     setChoiceCount(prev => prev + 1);
+    setElapsedTurns(prev => prev + 1);
+  }, []);
+
+  const addTemporaryTrait = useCallback((trait) => {
+    if (!trait?.id) return;
+    setTemporaryTraits(prev => prev.some(t => t.id === trait.id) ? prev : [...prev, trait]);
+  }, []);
+
+  const discoverClue = useCallback((clue) => {
+    if (!clue?.id) return;
+    setDiscoveredClues(prev => prev.some(c => c.id === clue.id) ? prev : [...prev, clue]);
+  }, []);
+
+  const updateObjective = useCallback((objectiveId, changes) => {
+    if (!objectiveId) return;
+    setObjectiveState(prev => ({
+      ...prev,
+      [objectiveId]: { ...(prev[objectiveId] || {}), ...changes },
+    }));
   }, []);
 
   const recordChoice = useCallback((eventId, choiceId, choiceText, effect) => {
-    if (runState) {
-      setRunState(prev => {
-        const updated = { ...prev };
-        applyChoiceEffect(updated, eventId, choiceId, choiceText, effect);
-        return updated;
-      });
-    }
-  }, [runState]);
+    setRunState(prev => {
+      if (!prev) return prev;
+      const updated = { ...prev };
+      applyChoiceEffect(updated, eventId, choiceId, choiceText, effect);
+      return updated;
+    });
+  }, []);
 
   const resetGame = useCallback(() => {
     setPlayer(null);
@@ -178,52 +204,126 @@ export function GameProvider({ children }) {
     setKillerCharacterId(null);
     setThreatType(null);
     setRunState(null);
-    try { localStorage.removeItem(SESSION_KEY); } catch {}
+    setRunSeed(null);
+    setActiveModifiers([]);
+    setTemporaryTraits([]);
+    setDiscoveredClues([]);
+    setObjectiveState({});
+    setElapsedTurns(0);
+    try {
+      localStorage.removeItem(SESSION_KEY);
+      LEGACY_SESSION_KEYS.forEach(key => localStorage.removeItem(key));
+    } catch {}
   }, []);
 
+  useEffect(() => {
+    snapshotRef.current = {
+      version: SAVE_VERSION,
+      savedAt: new Date().toISOString(),
+      player,
+      party,
+      focusedMemberId,
+      gamePhase,
+      choiceCount,
+      suspicionScores,
+      cohesionScore,
+      killerCharacterId,
+      threatType,
+      runState,
+      runSeed,
+      activeModifiers,
+      temporaryTraits,
+      discoveredClues,
+      objectiveState,
+      elapsedTurns,
+    };
+  }, [player, party, focusedMemberId, gamePhase, choiceCount, suspicionScores, cohesionScore, killerCharacterId, threatType, runState, runSeed, activeModifiers, temporaryTraits, discoveredClues, objectiveState, elapsedTurns]);
+
   const saveSession = useCallback(() => {
-    setPlayer(currentPlayer => {
-      setParty(currentParty => {
-        setChoiceCount(currentCount => {
-          if (currentPlayer) {
-            try {
-              localStorage.setItem(SESSION_KEY, JSON.stringify({
-                player: currentPlayer,
-                party: currentParty,
-                choiceCount: currentCount,
-                runState: runState,
-              }));
-            } catch {}
-          }
-          return currentCount;
-        });
-        return currentParty;
-      });
-      return currentPlayer;
-    });
-  }, [runState]);
+    const snapshot = snapshotRef.current;
+    if (!snapshot?.player) return false;
+    try {
+      localStorage.setItem(SESSION_KEY, JSON.stringify(snapshot));
+      return true;
+    } catch {
+      return false;
+    }
+  }, []);
+
+  const migrateSession = useCallback((data) => {
+    if (!data?.player) return null;
+    const savedParty = data.party || [];
+    return {
+      version: SAVE_VERSION,
+      savedAt: data.savedAt || new Date().toISOString(),
+      player: data.player,
+      party: savedParty,
+      focusedMemberId: data.focusedMemberId || null,
+      gamePhase: "playing",
+      choiceCount: data.choiceCount || 0,
+      suspicionScores: data.suspicionScores || initSuspicionScores(savedParty.map(m => m.id)),
+      cohesionScore: Number.isFinite(data.cohesionScore) ? data.cohesionScore : 60,
+      killerCharacterId: data.killerCharacterId || selectKiller(savedParty),
+      threatType: data.threatType || "spirit",
+      runState: data.runState || null,
+      runSeed: data.runSeed || `${Date.now()}-migrated`,
+      activeModifiers: data.activeModifiers || [],
+      temporaryTraits: data.temporaryTraits || [],
+      discoveredClues: data.discoveredClues || [],
+      objectiveState: data.objectiveState || {},
+      elapsedTurns: data.elapsedTurns || data.choiceCount || 0,
+    };
+  }, []);
 
   const loadSession = useCallback(() => {
     try {
-      const raw = localStorage.getItem(SESSION_KEY);
+      let raw = localStorage.getItem(SESSION_KEY);
+      if (!raw) {
+        for (const key of LEGACY_SESSION_KEYS) {
+          raw = localStorage.getItem(key);
+          if (raw) break;
+        }
+      }
       if (!raw) return false;
-      const { player: p, party: pa, choiceCount: cc, runState: rs } = JSON.parse(raw);
-      if (!p) return false;
-      setPlayer(p);
-      setParty(pa || []);
-      setChoiceCount(cc || 0);
-      setRunState(rs || null);
+      const data = migrateSession(JSON.parse(raw));
+      if (!data) return false;
+
+      setPlayer(data.player);
+      setParty(data.party);
+      setFocusedMemberId(data.focusedMemberId);
+      setChoiceCount(data.choiceCount);
+      setSuspicionScores(data.suspicionScores);
+      setCohesionScore(data.cohesionScore);
+      setKillerCharacterId(data.killerCharacterId);
+      setThreatType(data.threatType);
+      setRunState(data.runState);
+      setRunSeed(data.runSeed);
+      setActiveModifiers(data.activeModifiers);
+      setTemporaryTraits(data.temporaryTraits);
+      setDiscoveredClues(data.discoveredClues);
+      setObjectiveState(data.objectiveState);
+      setElapsedTurns(data.elapsedTurns);
       setGamePhase("playing");
+      localStorage.setItem(SESSION_KEY, JSON.stringify(data));
       return true;
-    } catch { return false; }
-  }, []);
+    } catch {
+      return false;
+    }
+  }, [migrateSession]);
 
   const clearSession = useCallback(() => {
-    try { localStorage.removeItem(SESSION_KEY); } catch {}
+    try {
+      localStorage.removeItem(SESSION_KEY);
+      LEGACY_SESSION_KEYS.forEach(key => localStorage.removeItem(key));
+    } catch {}
   }, []);
 
   const hasSavedSession = useCallback(() => {
-    try { return !!localStorage.getItem(SESSION_KEY); } catch { return false; }
+    try {
+      return !!localStorage.getItem(SESSION_KEY) || LEGACY_SESSION_KEYS.some(key => !!localStorage.getItem(key));
+    } catch {
+      return false;
+    }
   }, []);
 
   return (
@@ -270,6 +370,16 @@ export function GameProvider({ children }) {
       runState,
       setRunState,
       recordChoice,
+      runSeed,
+      activeModifiers,
+      setActiveModifiers,
+      temporaryTraits,
+      addTemporaryTrait,
+      discoveredClues,
+      discoverClue,
+      objectiveState,
+      updateObjective,
+      elapsedTurns,
     }}>
       {children}
     </GameContext.Provider>
