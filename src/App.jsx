@@ -19,28 +19,23 @@ import StoryJournal from '@/pages/StoryJournal';
 import LegacyHub from '@/pages/LegacyHub';
 import ChallengeMode from '@/pages/ChallengeMode';
 import ProgressionGameShell from '@/components/game/ProgressionGameShell';
+import ProgressionNav from '@/components/game/ProgressionNav';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
 
   if (isLoadingPublicSettings || isLoadingAuth) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
-      </div>
-    );
+    return <div className="fixed inset-0 flex items-center justify-center"><div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin" /></div>;
   }
 
   if (authError) {
     if (authError.type === 'user_not_registered') return <UserNotRegisteredError />;
-    if (authError.type === 'auth_required') {
-      navigateToLogin();
-      return null;
-    }
+    if (authError.type === 'auth_required') { navigateToLogin(); return null; }
   }
 
   return (
     <GameProvider>
+      <ProgressionNav />
       <Routes>
         <Route path="/" element={<HomeScreen />} />
         <Route path="/home" element={<HomeScreen />} />
@@ -64,9 +59,7 @@ function App() {
   return (
     <AuthProvider>
       <QueryClientProvider client={queryClientInstance}>
-        <Router>
-          <AuthenticatedApp />
-        </Router>
+        <Router><AuthenticatedApp /></Router>
         <Toaster />
       </QueryClientProvider>
     </AuthProvider>
