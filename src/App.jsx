@@ -16,6 +16,9 @@ import AdminPanel from '@/pages/AdminPanel';
 import IntroNarration from '@/pages/IntroNarration';
 import RunHistory from '@/pages/RunHistory';
 import StoryJournal from '@/pages/StoryJournal';
+import LegacyHub from '@/pages/LegacyHub';
+import ChallengeMode from '@/pages/ChallengeMode';
+import ProgressionGameShell from '@/components/game/ProgressionGameShell';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -29,9 +32,8 @@ const AuthenticatedApp = () => {
   }
 
   if (authError) {
-    if (authError.type === 'user_not_registered') {
-      return <UserNotRegisteredError />;
-    } else if (authError.type === 'auth_required') {
+    if (authError.type === 'user_not_registered') return <UserNotRegisteredError />;
+    if (authError.type === 'auth_required') {
       navigateToLogin();
       return null;
     }
@@ -40,14 +42,15 @@ const AuthenticatedApp = () => {
   return (
     <GameProvider>
       <Routes>
-        {/* APP ENTRY LOCK: Direct to Home. NO global intro/splash. Narration only in-game. */}
         <Route path="/" element={<HomeScreen />} />
         <Route path="/home" element={<HomeScreen />} />
         <Route path="/select" element={<CharacterSelect />} />
         <Route path="/confirm" element={<CharacterConfirm />} />
         <Route path="/intro" element={<IntroNarration />} />
-        <Route path="/game" element={<GameScreen />} />
+        <Route path="/game" element={<ProgressionGameShell><GameScreen /></ProgressionGameShell>} />
         <Route path="/summary" element={<SummaryScreen />} />
+        <Route path="/legacy" element={<LegacyHub />} />
+        <Route path="/challenge" element={<ChallengeMode />} />
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/history" element={<RunHistory />} />
         <Route path="/journal" element={<StoryJournal />} />
