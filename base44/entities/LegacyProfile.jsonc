@@ -1,0 +1,55 @@
+{
+  "name": "LegacyProfile",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "description": "Owner of this legacy profile"
+    },
+    "legacy_currency": {
+      "type": "number",
+      "default": 0
+    },
+    "completed_runs": {
+      "type": "number",
+      "default": 0
+    },
+    "best_survivor_count": {
+      "type": "number",
+      "default": 0
+    },
+    "unlocked_trait_ids": {
+      "type": "string",
+      "description": "JSON array of permanent trait IDs",
+      "default": "[]"
+    },
+    "discovered_clue_ids": {
+      "type": "string",
+      "description": "JSON array of permanently discovered clue IDs",
+      "default": "[]"
+    },
+    "unlocked_ending_ids": {
+      "type": "string",
+      "description": "JSON array of story and ending combinations",
+      "default": "[]"
+    },
+    "survivor_records": {
+      "type": "string",
+      "description": "JSON array of character survival and scar records",
+      "default": "[]"
+    },
+    "headquarters_upgrades": {
+      "type": "string",
+      "description": "JSON object keyed by headquarters upgrade ID",
+      "default": "{}"
+    },
+    "challenge_unlocks": {
+      "type": "string",
+      "description": "JSON array of unlocked challenge IDs",
+      "default": "[]"
+    }
+  },
+  "required": [
+    "user_email"
+  ]
+}
