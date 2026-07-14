@@ -1,0 +1,37 @@
+{
+  "name": "SceneAsset",
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string",
+      "description": "Unique asset key for referencing in events"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "URL to the scene image"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the scene"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "scene",
+        "character",
+        "item",
+        "environment",
+        "ui"
+      ],
+      "default": "scene",
+      "description": "Asset category for filtering"
+    },
+    "tags": {
+      "type": "string",
+      "description": "Comma-separated tags for search and filtering"
+    }
+  },
+  "required": [
+    "key"
+  ]
+}

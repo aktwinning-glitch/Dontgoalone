@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-body: 'DM Sans', sans-serif;
+    --font-display: 'Bebas Neue', sans-serif;
+
+    /* ── GOTHIC NEON PALETTE ─────────────────────────────────────────── */
+    --background: 240 10% 2%;        /* #050507 deep black */
+    --foreground: 45 20% 91%;        /* #E8E6D9 soft ivory */
+    --card: 240 12% 6%;              /* #0F0F15 dark slate */
+    --card-foreground: 45 20% 91%;
+    --popover: 240 12% 6%;
+    --popover-foreground: 45 20% 91%;
+
+    /* Jewel primaries */
+    --primary: 340 100% 35%;         /* ruby #B3003C */
+    --primary-foreground: 45 20% 94%;
+    --secondary: 240 12% 10%;
+    --secondary-foreground: 240 6% 64%; /* muted gray #A3A3B2 */
+    --muted: 240 10% 12%;
+    --muted-foreground: 240 6% 55%;
+
+    /* Amethyst accent */
+    --accent: 278 93% 53%;           /* amethyst #A020F0 */
+    --accent-foreground: 45 20% 94%;
+
+    --destructive: 340 100% 35%;
+    --destructive-foreground: 45 20% 94%;
+    --border: 240 10% 14%;
+    --input: 240 10% 14%;
+    --ring: 185 100% 50%;            /* electric cyan #00F0FF */
+
+    /* Neon accents as CSS vars */
+    --neon-cyan: 185 100% 50%;       /* #00F0FF */
+    --neon-pink: 322 100% 58%;       /* #FF2DAA */
+    --neon-green: 88 100% 62%;       /* #A8FF3F */
+    --neon-violet: 284 100% 48%;     /* #C400FF */
+
+    /* Jewel tones */
+    --ruby: 340 100% 35%;            /* #B3003C */
+    --amethyst: 278 93% 53%;         /* #A020F0 */
+    --sapphire: 224 100% 55%;        /* #1A4FFF */
+    --emerald: 157 83% 37%;          /* #0FAF6A */
+
+    /* Game-specific */
+    --bone: 45 20% 91%;
+    --toxic: 88 100% 62%;
+    --coral: 340 100% 35%;
+    --violet: 284 100% 48%;
+    --teal: 185 100% 50%;
+    --amber: 38 95% 58%;
+    --moonblue: 224 100% 55%;
+    --fog: 240 10% 50%;
+
+    --chart-1: 340 100% 45%;
+    --chart-2: 185 100% 50%;
+    --chart-3: 88 100% 62%;
+    --chart-4: 38 95% 58%;
+    --chart-5: 278 93% 53%;
+    --radius: 0.85rem;
+
+    --danger: 340 100% 40%;
+    --warning: 38 95% 58%;
+    --success: 157 83% 37%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    overscroll-behavior: none;
+  }
+  html, body {
+    overscroll-behavior: none;
+  }
+  button, [role="button"], .card, input, select, textarea {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  input, textarea {
+    user-select: text;
+    -webkit-user-select: text;
+  }
+  h1, h2, h3, .font-display {
+    font-family: var(--font-display);
+    letter-spacing: 0.02em;
+  }
+}
+
+/* Floating animation for portraits */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-float {
+  animation: float 3.5s ease-in-out infinite;
+}
+.animate-float-slow {
+  animation: float 5s ease-in-out infinite;
+}
+.animate-float-delay {
+  animation: float 4s ease-in-out 0.8s infinite;
+}
+
+/* Glow pulse for success */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 8px 0px hsl(var(--success) / 0.4); }
+  50% { box-shadow: 0 0 20px 4px hsl(var(--success) / 0.7); }
+}
+.animate-glow-success {
+  animation: glow-pulse 1.5s ease-in-out infinite;
+}
+
+/* Shake for failure */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+.animate-shake {
+  animation: shake 0.45s ease-in-out;
+}
+
+/* Panel slide-in */
+@keyframes slide-in-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-in {
+  animation: slide-in-up 0.25s ease-out both;
+}
+
+/* Violet glow for active/selected */
+@keyframes violet-glow {
+  0%, 100% { box-shadow: 0 0 10px 2px hsl(var(--violet) / 0.35); }
+  50% { box-shadow: 0 0 22px 6px hsl(var(--violet) / 0.6); }
+}
+.animate-glow-violet {
+  animation: violet-glow 2s ease-in-out infinite;
+}
+
+/* Coral glow for CTA buttons */
+@keyframes coral-glow {
+  0%, 100% { box-shadow: 0 0 12px 2px hsl(var(--coral) / 0.4); }
+  50% { box-shadow: 0 0 24px 6px hsl(var(--coral) / 0.65); }
+}
+.animate-glow-coral {
+  animation: coral-glow 2.2s ease-in-out infinite;
+}

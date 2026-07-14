@@ -1,0 +1,75 @@
+{
+  "name": "RunHistory",
+  "type": "object",
+  "properties": {
+    "story_id": {
+      "type": "string",
+      "description": "Which story was played"
+    },
+    "story_title": {
+      "type": "string"
+    },
+    "character_name": {
+      "type": "string",
+      "description": "Player character name"
+    },
+    "character_id": {
+      "type": "string"
+    },
+    "killer_character_id": {
+      "type": "string",
+      "description": "Who was the killer this run"
+    },
+    "killer_character_name": {
+      "type": "string"
+    },
+    "survivors_count": {
+      "type": "number",
+      "default": 0
+    },
+    "total_party": {
+      "type": "number",
+      "default": 0
+    },
+    "ending_type": {
+      "type": "string",
+      "enum": [
+        "good",
+        "mixed",
+        "bad",
+        ""
+      ]
+    },
+    "final_fear": {
+      "type": "number",
+      "default": 0
+    },
+    "final_threat": {
+      "type": "number",
+      "default": 0
+    },
+    "nights_survived": {
+      "type": "number",
+      "default": 0
+    },
+    "choices_made": {
+      "type": "number",
+      "default": 0
+    },
+    "major_flags": {
+      "type": "string",
+      "description": "JSON array of notable flag keys set during the run"
+    },
+    "event_path": {
+      "type": "string",
+      "description": "JSON array of event_ids visited in order"
+    },
+    "party_outcomes": {
+      "type": "string",
+      "description": "JSON array of {name, status} for each party member"
+    }
+  },
+  "required": [
+    "character_name"
+  ]
+}

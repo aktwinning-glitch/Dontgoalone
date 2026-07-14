@@ -1,0 +1,452 @@
+{
+  "_version": "1.0",
+  "_exported_at": "2026-04-07T00:00:00Z",
+  "metadata": {
+    "story_id": "the_rental",
+    "title": "The Rental",
+    "chapter_label": "Chapter 1-2: Arrival & First Blood",
+    "subtitle": "Six friends. One night. Something unfinished.",
+    "description": "A remote cabin. Old friends. Years ago, something happened here. This time, you got a text. This time, you came back.",
+    "emoji": "🔪",
+    "status": "active",
+    "accent_color": "hsl(351 78% 60%)",
+    "cover_image_url": "",
+    "survivor_count": 6,
+    "visible_on_homepage": true,
+    "sort_order": 0
+  },
+  "acts": [
+    {
+      "id": "act_1",
+      "label": "Act 1: Arrival & Discovery",
+      "event_range": { "start": 1, "end": 8 },
+      "description": "Return to the cabin. The basement reveals a truth path. The group fractures."
+    },
+    {
+      "id": "act_2",
+      "label": "Act 2: Separation & First Blood",
+      "event_range": { "start": 9, "end": 12 },
+      "description": "Someone dies. The horror becomes real. Guilt surfaces."
+    }
+  ],
+  "events": [
+    {
+      "event_id": "evt_001",
+      "text": "You arrive at the cabin after five years. Everything looks the same. Too the same. Cam opens the door from inside before anyone knocks. She's pale, almost waiting. 'I got a text,' she says. 'Did you all...?'",
+      "location": "porch",
+      "night": 1,
+      "choices": [
+        {
+          "text": "Ask Cam who else is here and what she knows",
+          "statUsed": "intelligence",
+          "difficulty": 2,
+          "successEffect": {
+            "outcomeText": "Cam seems to relax slightly. 'Riley and Ash are inside. Devon and Suki went to find firewood. I don't know what's happening, but—' She stops. You both look at the basement door. It's open. It was never open."
+          },
+          "failEffect": {
+            "outcomeText": "Cam clams up. 'Just... come inside.' She doesn't answer. The basement door behind her is open. That was always locked."
+          },
+          "nextEventId": "evt_002"
+        },
+        {
+          "text": "Go straight inside and check the basement",
+          "statUsed": "strength",
+          "difficulty": 3,
+          "successEffect": {
+            "outcomeText": "You push past Cam. The basement stairs descend into black. You find a flashlight by the door. The beam catches something pale below. Old, wet stains on the concrete. Words carved into the support beam: 'DON'T TRUST CAM.'"
+          },
+          "failEffect": {
+            "outcomeText": "You move toward the basement. Cam grabs your arm. 'No. Not down there. Not alone.' Her grip is iron. You stop. The basement door swings shut with a soft click. It locks behind her."
+          },
+          "nextEventId": "evt_002",
+          "flagsAdded": { "basement_alone": false }
+        }
+      ]
+    },
+    {
+      "event_id": "evt_002",
+      "text": "All of you stand in the living room, wet from the drive. The air tastes like old wood and something else—copper, maybe. Ash speaks first: 'So... why are we really here?' No one answers. Riley checks her phone. 'That text. It came from an unknown number. Sent to all of us at the same time.' Cam is staring at the basement door.",
+      "location": "living_room",
+      "night": 1,
+      "choices": [
+        {
+          "text": "Suggest you all go into the basement together and search it properly",
+          "statUsed": "resilience",
+          "difficulty": 2,
+          "successEffect": {
+            "outcomeText": "You lead them down. The basement smells of rot and rust. Below the heating system, you find a locked box. Inside: photographs. You, Cam, Riley, Ash, Devon, Suki—and Chris. From five years ago. Except in the last photos, Chris is alone. And terrified. On the back of one photo, in Chris's handwriting: 'I'm still here.'",
+            "flagsAdded": { "found_photos": true, "truth_path_seeded": "chris_possessed" },
+            "addItem": "item_photo_stack"
+          },
+          "failEffect": {
+            "outcomeText": "You suggest it. Ash refuses. 'Not yet. I'm not ready to see—' She doesn't finish. Cam nods like she agrees with something Ash didn't say. Everyone looks away from everyone else. Someone turns on a radio upstairs. It's playing a song from five years ago. The exact song that was playing the day Chris disappeared."
+          },
+          "nextEventId": "evt_003"
+        },
+        {
+          "text": "Say nothing. Let everyone panic in their own way. Go explore alone",
+          "statUsed": "intelligence",
+          "difficulty": 2,
+          "successEffect": {
+            "outcomeText": "You slip away while they argue. The kitchen is first. Every dish is clean. Every glass exactly where it should be. The calendar on the wall is stopped on the day of Chris's disappearance. That's impossible. Someone wound it back. Someone wanted you to see it."
+          },
+          "failEffect": {
+            "outcomeText": "Cam follows you. 'You can't be alone.' She says it like a warning, not an offer. Her hand on your shoulder feels cold. In the kitchen, you find the calendar is stopped. 'That wasn't us,' Cam says quietly. 'That's how we found it.'"
+          },
+          "nextEventId": "evt_003"
+        }
+      ]
+    },
+    {
+      "event_id": "evt_003",
+      "text": "The kitchen is wrong in a way you can't name at first. Then you see it: nothing has changed since that weekend. The dishes from the last breakfast are still in the drying rack. The coffee is still in the pot—black sludge now. The date on the calendar is frozen on the day Chris disappeared. Someone has kept this kitchen exactly as it was, like a shrine. Or a trap.",
+      "location": "kitchen",
+      "night": 1,
+      "choices": [
+        {
+          "text": "Check the back door. Is the kitchen window explanation still believable?",
+          "statUsed": "intelligence",
+          "difficulty": 2,
+          "successEffect": {
+            "outcomeText": "The back door is locked from the outside and inside. The kitchen window frame is old, paint cracked. Someone could have wedged it open from outside, forced the latch. But the sill is dusty. Undisturbed. The window hasn't been opened in years."
+          },
+          "failEffect": {
+            "outcomeText": "You turn the handle. The back door opens. It was never locked at all. Your stomach drops. If the back door was open, the kitchen window story is a lie. But whose lie?"
+          },
+          "nextEventId": "evt_005"
+        },
+        {
+          "text": "Call for the others. This room is a message. They need to see it",
+          "statUsed": "charm",
+          "difficulty": 2,
+          "successEffect": {
+            "outcomeText": "They come. The moment they see the unchanged kitchen, the air goes electric with dread. Ash touches a dish and flinches. 'It's real. It's actually—' Riley leaves the room. You hear her outside, being sick. Cam stares at the calendar. 'This isn't love,' she whispers. 'This is a threat.'"
+          },
+          "failEffect": {
+            "outcomeText": "No one comes. You call again. Nothing. From upstairs, you hear Ash and Devon arguing. 'He's not upstairs!' 'Then where IS he?' By the time they get to you, the moment has passed. The kitchen is just a room again. But you know what you saw."
+          },
+          "flagsAdded": { "shared_truth": true },
+          "nextEventId": "evt_005"
+        }
+      ]
+    },
+    {
+      "event_id": "evt_004",
+      "text": "Under the sink, behind cleaning supplies, you find a journal. The handwriting is shaky, increasingly frantic. The first entry is dated five years ago, the day after arrival. 'Something is wrong with this place. Not the house. Chris. Chris is wrong. I've heard him in the walls at night. Footsteps that don't match his. He tried to hide it, but I saw his eyes.' The signature: Ash's handwriting.",
+      "location": "kitchen",
+      "night": 1,
+      "conditions": { "flags": { "found_photos": true } },
+      "choices": [
+        {
+          "text": "Take the journal and confront Ash with it",
+          "statUsed": "intelligence",
+          "difficulty": 3,
+          "successEffect": {
+            "outcomeText": "Ash goes pale. 'I wrote that. I wrote that and then... and then I stopped. I don't remember stopping. Chris said I was imagining things. He was so angry. Then the next morning he was gone and I never told anyone.' She's shaking. 'I've felt guilty about that for five years.'"
+          },
+          "failEffect": {
+            "outcomeText": "You show her the journal. She doesn't react. She just stares at it like it's a ghost. Then she smiles—a wrong smile. 'That's not my handwriting,' she says. But it is. It absolutely is."
+          },
+          "flagsAdded": { "ash_confession": true },
+          "nextEventId": "evt_006"
+        },
+        {
+          "text": "Keep the journal hidden. This is evidence",
+          "statUsed": "intelligence",
+          "difficulty": 1,
+          "successEffect": {
+            "outcomeText": "You pocket it. Later, reading it alone, you find the last entry is not in Ash's handwriting. Someone else wrote: 'She remembers. They all remember. But they can't save him. He's already gone. —C'"
+          },
+          "failEffect": {
+            "outcomeText": "You hide it poorly. Riley finds it later and passes it around. By the time everyone has read it, the mood has fractured. Nobody trusts Ash. Nobody trusts anyone."
+          },
+          "flagsAdded": { "ash_suspect": true },
+          "addItem": "item_ash_journal",
+          "nextEventId": "evt_006"
+        }
+      ]
+    },
+    {
+      "event_id": "evt_005",
+      "text": "Chris's bedroom is upstairs, third door on the left. You stand in the doorway. Posters from five years ago still line the walls. The bed is made military-neat. On the desk: a laptop, closed. A notebook. A photo of all six of you on graduation day. In the corner: a hunting rifle, cleaned, oiled.",
+      "location": "bedroom",
+      "night": 1,
+      "choices": [
+        {
+          "text": "Open the laptop. Whatever is on here might explain everything",
+          "statUsed": "intelligence",
+          "difficulty": 3,
+          "successEffect": {
+            "outcomeText": "It boots. The desktop is blank. One folder: 'READ_ME.' You open it. Video files, audio recordings, text logs. Dated from five years ago. The first video shows Chris talking to the camera, eyes haunted. 'If you're seeing this, I'm already gone. But I won't be far. I promised myself I'd never leave. Not like they left me.'"
+          },
+          "failEffect": {
+            "outcomeText": "It boots. The moment you touch the laptop, footsteps thunder down the hallway. Devon appears in the doorway, furious. 'What are you doing in here?' He moves toward you. Behind him, the hallway is dark. Something moves in that darkness."
+          },
+          "flagsAdded": { "found_video_evidence": true },
+          "nextEventId": "evt_007"
+        },
+        {
+          "text": "Check the notebook. Look for handwritten clues",
+          "statUsed": "intelligence",
+          "difficulty": 2,
+          "successEffect": {
+            "outcomeText": "The notebook is a journal. Most pages are normal—complaints about classes, sketches, notes about girls. But the last ten pages are obsessive. Lists of names: everyone in the cabin, with marks next to them. Tallies. On the final page: 'I can feel it. I'm not alone in my head anymore. But I want it. I want the power. I want them to pay.' The handwriting is barely recognizable as Chris's by the end."
+          },
+          "failEffect": {
+            "outcomeText": "You reach for the notebook. Ash is suddenly behind you. 'Don't.' She grabs it first. 'This isn't for you to see.' She holds it to her chest, and for a moment, she doesn't look like Ash at all."
+          },
+          "flagsAdded": { "chris_obsession_known": true },
+          "nextEventId": "evt_007"
+        }
+      ]
+    },
+    {
+      "event_id": "evt_006",
+      "text": "The rifle in Chris's room is clean. Recent oil. Lived-in. But Chris hated guns. You remember him saying so years ago, after his parents died in that hunting accident. So why is this here? And why does it feel like someone was expecting you to find it?",
+      "location": "bedroom",
+      "night": 1,
+      "conditions": { "flags": { "ash_confession": true } },
+      "choices": [
+        {
+          "text": "Take the rifle and secure it",
+          "statUsed": "strength",
+          "difficulty": 1,
+          "successEffect": {
+            "outcomeText": "You grab the rifle and move it to a hallway closet, unloaded. The moment you do, you feel like you've moved a chess piece someone else was guiding. The air shifts. Something in the cabin acknowledges the move."
+          },
+          "failEffect": {
+            "outcomeText": "You touch the rifle. Cam appears in the doorway. 'Don't. Leave it. It has to stay there.' She's serious. This isn't a suggestion. You back away."
+          },
+          "flagsAdded": { "rifle_secured": true },
+          "nextEventId": "evt_008"
+        },
+        {
+          "text": "Leave it. Don't move it. Someone wanted it here for a reason",
+          "statUsed": "intelligence",
+          "difficulty": 2,
+          "successEffect": {
+            "outcomeText": "Smart. If this is bait or a trap, moving it would announce you've found it. You memorize its position and leave. An hour later, from downstairs, you hear Suki scream. Then silence. Then everyone running."
+          },
+          "failEffect": {
+            "outcomeText": "You leave it. But Riley finds it an hour later and doesn't think. She panics, hides it badly. By the time you come back to check, it's gone. Someone moved it. Someone who knows this cabin better than you do."
+          },
+          "flagsAdded": { "rifle_discovered": true },
+          "nextEventId": "evt_008"
+        }
+      ]
+    },
+    {
+      "event_id": "evt_007",
+      "text": "Devon suggests a run—clear your heads, find the property boundary, make sure you're safe. 'Or at least know what we're dealing with.' Suki agrees. The forest edge is dark but navigable in daylight. You, Devon, and Suki head out.",
+      "location": "forest_edge",
+      "night": 1,
+      "choices": [
+        {
+          "text": "Head deeper. The cabin's not the only place with answers",
+          "statUsed": "intelligence",
+          "difficulty": 2,
+          "successEffect": {
+            "outcomeText": "You push into the woods. Trees crowd the path. Devon keeps stopping, listening. 'Do you hear that?' Beneath the wind: running water. You reach the lake. The dock is rotted but still standing. On the water, something floats. It's pale. Floating face-down. The size and shape of a body. Devon's voice drops to a whisper: 'That wasn't there five years ago.'"
+          },
+          "failEffect": {
+            "outcomeText": "You go deeper. The trees get thicker. You lose the sun. Devon wants to turn back. Suki's pace is getting slower. Then you hear it—twigs snapping in rapid succession, moving parallel to you, deliberately closer. Fast. Something breathing hard. 'RUN,' Devon grabs your arm and you all bolt for the cabin."
+          },
+          "flagsAdded": { "forest_pursuit": true },
+          "nextEventId": "evt_009"
+        },
+        {
+          "text": "Stay at the cabin's edge. Look for signs of people—footprints, markings, traps",
+          "statUsed": "intelligence",
+          "difficulty": 2,
+          "successEffect": {
+            "outcomeText": "You find them. Fresh footprints. Size 10 or 11. Leading from the forest toward the cabin's back entrance. Multiple sets, over multiple days. Someone has been circling the property. Recently. The trails are only days old. Maybe hours. Devon's jaw tightens. 'Someone's been watching us.'"
+          },
+          "failEffect": {
+            "outcomeText": "You search but find nothing. Just fallen leaves and rotted wood. The forest floor tells no stories. Which means either no one has been out here, or someone knows how not to be tracked. Devon is uneasy. 'We should go back. Now.'"
+          },
+          "flagsAdded": { "tracking_discovered": true },
+          "nextEventId": "evt_009"
+        }
+      ]
+    },
+    {
+      "event_id": "evt_008",
+      "text": "Back at the cabin, the mood has cracked. Riley and Cam aren't speaking. Ash is in Chris's room with the door locked. You can hear her crying through the wall. Devon comes to find you: 'We need to decide what we're doing. Stay tonight? Leave now? Call the police?' He doesn't know about the photos. He doesn't know about Ash's journal. No one's sharing anymore. The trust is broken.",
+      "location": "living_room",
+      "night": 1,
+      "choices": [
+        {
+          "text": "Call a group meeting. Tell everyone everything you've found",
+          "statUsed": "charm",
+          "difficulty": 3,
+          "successEffect": {
+            "outcomeText": "They gather. You lay it out: the photos, the journal, the unchanged kitchen, the video evidence. For five minutes, they listen. Then Cam stands up. 'You're twisting this. Those were my photos. My journal. I hid them because I didn't want to remember.' She's lying. You can tell. But no one else seems to see it. The room goes cold."
+          },
+          "failEffect": {
+            "outcomeText": "You try. But before you finish explaining, Ash erupts. She takes the evidence from you and throws it into the fireplace. 'It's over. Chris is gone. We can't change that. Stop digging.' The photos catch fire. The journal blackens. Everyone watches it burn in silence."
+          },
+          "flagsAdded": { "secrets_exposed": true },
+          "nextEventId": "evt_010"
+        },
+        {
+          "text": "Keep quiet. Let them fracture. A divided group can't stop you from learning the truth",
+          "statUsed": "intelligence",
+          "difficulty": 2,
+          "successEffect": {
+            "outcomeText": "Good. Cam excuses herself to the porch. Riley follows. Ash is still locked in Chris's room. Devon goes to get firewood. Suki is in the kitchen. For the first time since arriving, you have real privacy. In the dark study off the living room, you find a photo album. On the back cover, written in red ink: 'The night Chris died, I was awake. I saw everything. I did nothing.'"
+          },
+          "failEffect": {
+            "outcomeText": "You say nothing. But someone sees you looking at the evidence. Suki catches you in the hallway with a photo. 'Where did you get that?' Her voice is sharp. She seems afraid. Not of what's in the photo. Of you. Of what you know."
+          },
+          "flagsAdded": { "secrets_hidden": true },
+          "nextEventId": "evt_010"
+        }
+      ]
+    },
+    {
+      "event_id": "evt_009",
+      "text": "It's dark now. You're in the hallway when you hear it: a scream from downstairs. Not fear. Pain. Real, horrible pain. You race down. In the kitchen, under the old light, it's happening. Devon is being pulled backward into the basement stairwell. His hands rake across the floor, nails breaking, leaving red streaks. Behind him—something tall, wrong-jointed, with fingers too long. It's wearing Devon's face over its own. When it looks up at you, Devon's mouth moves, but the voice that comes out is layered. Multiple. 'Thank you for coming back.' It drags him down into the darkness. His screams cut off when his head hits the bottom step. Then nothing. Just the wet sound of something settling into its meal.",
+      "location": "kitchen",
+      "night": 1,
+      "killPause": true,
+      "is_ending": false,
+      "choices": [
+        {
+          "text": "Try to grab Devon before he's pulled into the darkness",
+          "statUsed": "strength",
+          "difficulty": 4,
+          "successEffect": {
+            "outcomeText": "You lunge. Your fingers close on Devon's wrist. For a moment, you're pulling. For a moment, it works. Then the thing at the bottom of the stairs pulls harder. Your grip tears open. Devon's arm slides through your hands like wet rope. He's gone. Behind you, Suki is screaming. The basement door slams shut with Devon on the other side. The lock clicks. Cam appears in the doorway from the living room, holding the key. 'He was always going to go down there,' she says calmly."
+          },
+          "failEffect": {
+            "outcomeText": "You reach for him. Too slow. Devon's body is already halfway down. The thing drags him faster. You see him hit the concrete below—hear the impact with your whole body. By the time you get to the stairs, Cam is locking the basement door from your side. 'You can't save him,' she says. 'He's home now.'"
+          },
+          "flagsAdded": { "devon_dead": true, "first_kill_witnessed": true, "cam_complicit": true },
+          "partyConsequence": {
+            "memberId": "devon_id",
+            "outcome": "dead",
+            "statusText": "Pulled into the basement by something that isn't human. Screaming cut short by impact with concrete. Devon is gone."
+          },
+          "nextEventId": "evt_010"
+        },
+        {
+          "text": "Run. Get out of the kitchen. Rally the others",
+          "statUsed": "intelligence",
+          "difficulty": 2,
+          "successEffect": {
+            "outcomeText": "You don't freeze. You turn and run toward the living room, screaming. 'EVERYONE GET DOWN HERE NOW!' Behind you, Devon's final scream echoes from the basement. By the time they appear in the doorway, it's over. Cam is standing at the basement door with a key, very calm. Riley sees the blood trail on the floor and makes a sound like a wounded animal. Ash backs away slowly. 'Oh my god. Oh my god. No.'"
+          },
+          "failEffect": {
+            "outcomeText": "You're frozen. Devon's scream is the loudest thing in the world and you can't move. By the time you make it to the living room, Riley and Ash are already there. They see the blood. Riley understands before you can explain. 'Where's Devon?' No one answers. The basement door is locked. Cam appears from the porch entrance, very calm, holding a key."
+          },
+          "flagsAdded": { "devon_dead": true, "first_kill_witnessed": true },
+          "partyConsequence": {
+            "memberId": "devon_id",
+            "outcome": "dead",
+            "statusText": "Pulled into the basement. Whatever took him, it was fast. It was deliberate. Devon is dead."
+          },
+          "nextEventId": "evt_010"
+        }
+      ]
+    },
+    {
+      "event_id": "evt_010",
+      "text": "No one speaks for a long time. Suki sits on the kitchen floor, covered in Devon's blood, repeating 'no no no no' under her breath. Riley vomits into the sink. Ash walks to the basement door and pulls on the handle. It doesn't budge. 'Unlock it,' she says to Cam. 'Unlock it right now.' Cam is perfectly calm. 'I can't. Devon is home now. We're almost complete.' Ash grabs Cam by the throat. 'WHERE IS HE?' Cam smiles. 'Listen.' From the basement: wet dragging sounds. Bones on concrete. And underneath it all, breathing that sounds almost like a laugh.",
+      "location": "living_room",
+      "night": 1,
+      "is_ending": false,
+      "choices": [
+        {
+          "text": "Stop Ash. Restrain her before Cam does something worse",
+          "statUsed": "strength",
+          "difficulty": 2,
+          "successEffect": {
+            "outcomeText": "You pull Ash away from Cam. She fights you, screaming obscenities. 'He's still alive down there! We could—' But you both know Devon's not alive. Not anymore. She breaks, folding into you. Riley stands at the sink, shaking. Suki hasn't moved. Cam walks out to the porch like nothing happened. In the basement, you hear Devon's voice call your name. But it sounds wrong. Layered. Hungry."
+          },
+          "failEffect": {
+            "outcomeText": "You don't move in time. Cam's hand moves fast—not human-fast, but fast enough. She gets Ash in a hold, lifts her like she weighs nothing, and carries her toward the basement door. 'We need them below. All of them. That's what he said.' You lunge for them. Your fingers close on air."
+          },
+          "flagsAdded": { "ash_at_risk": true, "player_guilt": true },
+          "nextEventId": "evt_011"
+        },
+        {
+          "text": "Grab anything you can. Confront Cam. She knows what happened",
+          "statUsed": "resilience",
+          "difficulty": 3,
+          "successEffect": {
+            "outcomeText": "You pick up a kitchen knife. Your hand is shaking. 'What did you do?' Cam looks at you sadly. 'What did *we* do, five years ago? We left him. And he's been down there, waiting, changing, becoming something worthy of being alone.' She takes a step toward you. 'The knife won't work. Nothing works. But you can join him. That's what you're all here for.'"
+          },
+          "failEffect": {
+            "outcomeText": "You freeze. Cam walks past you to the porch like you're invisible. When you reach for her, Ash grabs your arm. 'Don't. Don't.' Her voice is dead. Behind you, the basement door creaks. Something is trying to get out. Or maybe it's trying to call someone in."
+          },
+          "flagsAdded": { "cam_revealed": true },
+          "nextEventId": "evt_011"
+        }
+      ]
+    },
+    {
+      "event_id": "evt_011",
+      "text": "Ash sits in Chris's room holding the rifle from under his bed. Her hands are steady, but her eyes are unfocused. When you find her, she's not pointing it at you. She's pointing it at herself. 'I killed him,' she says quietly. 'I did. I'm the one who saw something wrong five years ago and said nothing. I let him stay here. I let him become that.' She looks at you. 'We all did. And now we're trapped with what we made.'",
+      "location": "bedroom",
+      "night": 1,
+      "killPause": true,
+      "is_ending": false,
+      "choices": [
+        {
+          "text": "Tell her the truth: this isn't on her. This is on Cam. On whatever Chris became",
+          "statUsed": "charm",
+          "difficulty": 3,
+          "successEffect": {
+            "outcomeText": "Ash lowers the rifle an inch. 'Maybe,' she says. 'Or maybe we all share the guilt equally. Which means we all deserve to go down there.' She stands. 'But I'm not going to make it easy for it. We lock ourselves in. We figure out how to survive the night. And when we find a way out, we burn this place down with him in it.'"
+          },
+          "failEffect": {
+            "outcomeText": "Ash closes her eyes. 'You're being kind. I don't deserve kind.' Her finger moves toward the trigger. You lunge. The rifle goes off. The sound is enormous. You're both on the floor, wrestling for it. She's stronger than she should be. Or maybe you're weaker."
+          },
+          "flagsAdded": { "ash_survives": true, "group_plans_resistance": true },
+          "nextEventId": "evt_012"
+        },
+        {
+          "text": "Say nothing. Let her choose. You can't save everyone",
+          "statUsed": "intelligence",
+          "difficulty": 1,
+          "successEffect": {
+            "outcomeText": "Ash watches you. You watch her. For a long moment, nothing moves. Then she lowers the rifle. 'I was hoping you'd stop me,' she says. 'But maybe that's selfish too.' She sets it on the bed. 'Okay. We survive. We get out. We deal with what we did to him later, in therapy or in hell or wherever people like us end up.'"
+          },
+          "failEffect": {
+            "outcomeText": "You turn away. You can't watch this. The rifle shot is muffled by the pillow. By the time you turn back, Ash is on the bed, very still. The wall behind her is red. You stand there, unable to think, unable to move. Downstairs, something screams Devon's name over and over."
+          },
+          "flagsAdded": { "ash_death": true, "player_passive": true },
+          "partyConsequence": {
+            "memberId": "ash_id",
+            "outcome": "dead",
+            "statusText": "Guilt consumed her. She chose mercy instead of facing what comes next."
+          },
+          "nextEventId": "evt_012"
+        }
+      ]
+    }
+  ],
+  "items": [
+    {
+      "id": "item_photo_stack",
+      "name": "Photographs from Basement",
+      "description": "Five-year-old photos of the group at the cabin. In the last photo, Chris is alone, terrified. On the back: 'I'm still here.' Finding these triggered the understanding that Chris never left.",
+      "rarity": "clue",
+      "use_effect": null
+    },
+    {
+      "id": "item_ash_journal",
+      "name": "Ash's Journal - Hidden Entry",
+      "description": "Ash's handwriting fills most pages. The last entry is in a different hand: 'She remembers. They all remember. But they can't save him. —C' This was the first sign that something was reading Ash's guilt.",
+      "rarity": "clue",
+      "use_effect": null
+    },
+    {
+      "id": "item_chris_video",
+      "name": "Chris's Video Confession",
+      "description": "From Chris's laptop. His eyes are haunted. He says: 'If you're seeing this, I'm already gone. But I won't be far. I promised myself I'd never leave.' Recorded five years ago, before his disappearance.",
+      "rarity": "evidence",
+      "use_effect": null
+    }
+  ]
+}

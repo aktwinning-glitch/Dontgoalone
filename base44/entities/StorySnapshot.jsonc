@@ -1,0 +1,42 @@
+{
+  "name": "StorySnapshot",
+  "type": "object",
+  "properties": {
+    "story_id": {
+      "type": "string",
+      "description": "Which story this snapshot belongs to"
+    },
+    "label": {
+      "type": "string",
+      "description": "Human-readable checkpoint label"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional notes about this checkpoint"
+    },
+    "events_json": {
+      "type": "string",
+      "description": "Stringified array of all GameEvent records"
+    },
+    "dialogue_json": {
+      "type": "string",
+      "description": "Stringified array of all Dialogue records"
+    },
+    "characters_json": {
+      "type": "string",
+      "description": "Stringified array of all Character records"
+    },
+    "event_count": {
+      "type": "number",
+      "default": 0
+    },
+    "dialogue_count": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "story_id",
+    "label"
+  ]
+}

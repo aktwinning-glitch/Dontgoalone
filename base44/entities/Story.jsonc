@@ -1,0 +1,112 @@
+{
+  "name": "Story",
+  "type": "object",
+  "properties": {
+    "story_id": {
+      "type": "string",
+      "description": "Unique story identifier used to link events (e.g. the_rental). Never change this after creation."
+    },
+    "title": {
+      "type": "string",
+      "description": "Display title shown to players (may differ from story_id)"
+    },
+    "chapter_label": {
+      "type": "string",
+      "description": "e.g. Chapter 1 \u2014 The Timeshare"
+    },
+    "subtitle": {
+      "type": "string",
+      "description": "Short one-line tagline shown on homepage"
+    },
+    "description": {
+      "type": "string",
+      "description": "Homepage card description paragraph"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "locked",
+        "draft",
+        "coming_soon"
+      ],
+      "default": "locked",
+      "description": "Controls homepage visibility and playability"
+    },
+    "unlock_requirement": {
+      "type": "string",
+      "description": "Text shown when story is locked"
+    },
+    "emoji": {
+      "type": "string",
+      "description": "Emoji icon shown on homepage card",
+      "default": "\ud83d\udcd6"
+    },
+    "accent_color": {
+      "type": "string",
+      "description": "CSS color string for card accent (e.g. hsl(351 78% 60%))"
+    },
+    "cover_image_url": {
+      "type": "string",
+      "description": "Cover art image URL shown on homepage card"
+    },
+    "survivor_count": {
+      "type": "number",
+      "default": 6,
+      "description": "Number of party members in this story"
+    },
+    "visible_on_homepage": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether to show this story on the homepage"
+    },
+    "sort_order": {
+      "type": "number",
+      "default": 0
+    },
+    "act_structure": {
+      "type": "string",
+      "description": "JSON array describing acts (label, event_range, description)"
+    },
+    "ambient_sound_defaults": {
+      "type": "string",
+      "description": "JSON object with default audio layer configs for this story"
+    },
+    "intro_beats": {
+      "type": "string",
+      "description": "JSON array of opening narration beats: [{id, text, tapLabel}, ...]. If present, overrides hardcoded storyIntros.js for this story."
+    },
+    "intro_image_key": {
+      "type": "string",
+      "description": "SceneAsset key for the intro background image (e.g. introImage, cabinDusk)"
+    },
+    "intro_fallback_image_key": {
+      "type": "string",
+      "description": "SceneAsset key fallback if intro_image_key is not found"
+    },
+    "intro_fog_color": {
+      "type": "string",
+      "description": "CSS color for intro fog overlay e.g. hsl(271 87% 65% / 0.12)"
+    },
+    "phase_definitions": {
+      "type": "string",
+      "description": "JSON array of phase records: [{id, label, sublabel, emoji, color, bg, border, maxChoices}]. Overrides hardcoded STORY_PHASES for this story."
+    },
+    "map_background_key": {
+      "type": "string",
+      "description": "SceneAsset key for this story's map/board background image (e.g. rentalMapImage, lowTideMapImage)"
+    },
+    "map_overlay_key": {
+      "type": "string",
+      "description": "Optional SceneAsset key for a map overlay layer (e.g. fog, labels)"
+    },
+    "node_layout_preset": {
+      "type": "string",
+      "description": "Optional layout preset name for map node positions (e.g. cabin, beach, lab, french_quarter)"
+    }
+  },
+  "required": [
+    "story_id",
+    "title"
+  ]
+}
